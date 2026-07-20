@@ -1,0 +1,24 @@
+{
+  "name": "3.2p",
+  "version": "1.0.0",
+  "description": "Week 3 Workshop",
+  "license": "MIT",
+  "author": "Merrick Zivan Malong",
+  "type": "commonjs",
+  "main": "server.js",
+  "keywords": [
+    "Nodejs",
+    "Express",
+    "Materialize",
+    "HTML",
+    "JS",
+    "CSS"
+  ],
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^5.2.1"
+  }
+}
