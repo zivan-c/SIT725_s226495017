@@ -20,6 +20,7 @@
   },
   "dependencies": {
     "express": "^5.2.1",
-    "materialize-css": "^1.0.0-rc.2"
+    "materialize-css": "^1.0.0-rc.2",
+    "mongoose": "^9.8.1"
   }
 }
