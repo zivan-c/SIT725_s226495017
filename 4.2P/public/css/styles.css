@@ -1,22 +1,28 @@
+nav {
+background-color: #ED174C;
+}
+
 .navbar-size {
 width: 95%;
 margin: 0 auto;
 }
 nav .brand-logo {
-position: relative;
-display: flex;
-align-items: center;
-height: 100%;
-}
-nav .brand-logo img {
-display: block;
-height: 50px;
+  display: flex;
+  align-items: center;
+  height: 100%;
 }
 
+.user-image-size {
+  max-height: 80%;       /* Leaves a 10% gap top and bottom */
+  width: auto;          /* Keeps aspect ratio intact */
+  object-fit: contain;  /* Prevents distortion */
+  vertical-align: middle;
+}
+
+
 .main-body {
-background-color: #860038;
+background-color: #006BB6;
 color: white;
-height: calc(100vh - 64px);
 }
 .materialboxed-image {
 margin: 0 auto;
