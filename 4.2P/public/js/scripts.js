@@ -1,18 +1,3 @@
-const cardList = [
-    {
-    title: "goat",
-    image: "images/jr.jpeg",
-    link: "lebrawn",
-    desciption: "embiid or bron"
-    },
-    {
-    title: "cant believe",
-    image: "images/cant.jpeg",
-    link: "cant believe",
-    desciption: "cant believe this is my life rn"
-    }
-]
-
 const clickMe = () => {
     alert("chip or nah?")
 }
@@ -43,6 +28,14 @@ const submitForm = () => {
     console.log("Form Data Submitted: ", formData);
 }
 
+const getProjects = () => {
+    $.get('/api/projects', (response) => {
+        if(response.statusCode == 200) {
+            addCards(response.data);
+        }
+    })
+}
+
 
 $(document).ready(function(){
     $('.materialboxed').materialbox();
@@ -50,6 +43,7 @@ $(document).ready(function(){
     $('#clickMeButton').click(()=>{
     clickMe();
     })
+    getProjects();
     $('#formSubmit').click(() => {submitForm();})
     addCards(cardList);
 });
