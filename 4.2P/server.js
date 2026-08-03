@@ -33,6 +33,18 @@ const ProjectSchema = new mongoose.Schema({
 });
 const Project = mongoose.model('Project', ProjectSchema);
 
+const newProject = new Project({
+    FirstName: "Lebron",
+    LastName: "James",
+    ProjectName: "76ers"
+})
+try {
+    newProject.save()
+    console.log("It has been passed")
+} catch {
+    console.log(err)
+}
+
 
 /* const cardList = [
     {
