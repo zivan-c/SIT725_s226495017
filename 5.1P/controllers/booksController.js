@@ -1,7 +1,7 @@
-// Import the service
+
 const booksService = require('../services/booksService');
 
-// Controller uses the service to get data
+
 function getAllBooks(req, res) {
   const books = booksService.getAllBooks();
   res.json({
