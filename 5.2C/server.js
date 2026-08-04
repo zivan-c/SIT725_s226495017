@@ -10,13 +10,13 @@ mongoose.connection.on('connected', () => {
 
 
 const app = express();
-app.use(express.static(__dirname, '/public'));
+app.use(express.static('public'));
 app.use(express.json());
 app.use(express.urlencoded({extended: false}));
 
 const bookRoutes = require('./routes/bookRoute');
 
-app.use('/', bookRoutes);
+app.use('/api/books', bookRoutes);
 
 app.get('/', (req, res) => {
     res.send('Welcome to the Library');

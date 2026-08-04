@@ -1,6 +1,5 @@
 const mongoose = require('mongoose');
 
-
 const bookSchema = new mongoose.Schema({
 
     id: {type: String},
@@ -14,4 +13,4 @@ const bookSchema = new mongoose.Schema({
 
 })
 
-module.exports = model('Book', bookSchema);
+module.exports = mongoose.model('Book', bookSchema);

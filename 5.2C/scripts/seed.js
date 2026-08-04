@@ -2,6 +2,8 @@ const mongoose = require('mongoose');
 
 mongoose.connect('mongodb://127.0.0.1:27017/booksDB')
 
+const bookList = require('../models/bookModel');
+
 const sampleData = [
   { 
     id: 'b1',
@@ -62,5 +64,22 @@ const sampleData = [
     price: 31.99,
     currency: 'AUD'
   }
-]
+];
 
+(async () => {
+  try {
+    // ensure unique on id (good practice)
+    await bookList.collection.createIndex({ id: 1 }, { unique: true });
+
+    // clear and insert
+    await bookList.deleteMany({});
+    await bookList.insertMany(sampleData);
+
+    console.log('Seeded 5 books.');
+  } catch (err) {
+    console.error('Seeding failed:', err.message);
+  } finally {
+    await mongoose.connection.close();
+    process.exit(0);
+  }
+})();
