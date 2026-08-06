@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Books Catalogue</title>
+    <style>
+        dialog::backdrop {
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+        dialog {
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+    </style>
+</head>
+    <body>
+        <h1>Books Catalogue developed by s226495017</h1>
+        <p>Click the button below to get all books from the server</p>
+        <button id="getBooksBtn">Get Books</button>
+        <div id="bookListDisplay"></div>
+
+        <dialog id="bookModal">
+            <div style="padding: 20px; max-width: 400px;">
+                <h2 id="modalTitle">Loading...</h2>
+                <p><strong>Author:</strong> <span id="modalAuthor"></span></p>
+                <p><strong>Genre:</strong> <span id="modalGenre"></span></p>
+                <p><strong>Year:</strong> <span id="modalYear"></span></p>
+                <p><strong>Price:</strong> $<span id="modalPrice"></span> <span id="modalCurrency"></span></p>
+                <p><strong>Summary:</strong></p>
+                <p id="modalSummary" style="font-style: italic; color: #555;"></p>
+                
+                <br>
+                <button id="closeModalBtn">Close</button>
+            </div>
+        </dialog>
+
+        <script>
+            const btn = document.getElementById('getBooksBtn');
+            const display = document.getElementById('bookListDisplay');
+            const modal = document.getElementById('bookModal');
+            const closeModalBtn = document.getElementById('closeModalBtn');
+
+            btn.addEventListener('click', loadBooks);
+            closeModalBtn.addEventListener('click', () => modal.close());
+
+            async function loadBooks() {
+                try {
+                    const response = await fetch('/api/books');
+                    const result = await response.json();
+                    const books = result.data || result;
+
+                    if (!Array.isArray(books)) {
+                        throw new Error('Expected an array of books.');
+                    }
+
+                    display.innerHTML = books.map(book => {
+                        const formattedPrice = book.price?.$numberDecimal || book.price || 'N/A';
+                        return `
+                            <div class="bookCard">
+                                <span class="book-title" data-id="${book._id}" style="color: blue; cursor: pointer; text-decoration: underline;">
+                                    ${book.title}
+                                </span>
+                                <span> $${formattedPrice}</span>
+                                <span> ${book.currency || 'AUD'}</span>
+                            </div>
+                        `;
+                    }).join('');
+
+                    const titleLinks = document.querySelectorAll('.book-title');
+                    titleLinks.forEach(titleLink => {
+                        titleLink.addEventListener('click', (e) => {
+                            const bookId = e.target.getAttribute('data-id');
+                            showBookModal(bookId);
+                        });
+                    });
+
+                } catch(err) {
+                    console.error('Fetch failed:', err);
+                }
+            }
+
+            async function showBookModal(bookId) {
+                try {
+                    document.getElementById('modalTitle').textContent = 'Loading...';
+                    modal.showModal();
+
+                    const response = await fetch(`/api/books/${bookId}`);
+                    const result = await response.json();
+                    const book = result.data || result;
+
+                    const formattedPrice = book.price?.$numberDecimal || book.price || 'N/A';
+
+                    document.getElementById('modalTitle').textContent = book.title || 'N/A';
+                    document.getElementById('modalAuthor').textContent = book.author || 'N/A';
+                    document.getElementById('modalGenre').textContent = book.genre || 'N/A';
+                    document.getElementById('modalYear').textContent = book.year || 'N/A';
+                    document.getElementById('modalPrice').textContent = formattedPrice;
+                    document.getElementById('modalCurrency').textContent = book.currency || 'AUD';
+                    document.getElementById('modalSummary').textContent = book.summary || 'No summary available.';
+
+                } catch (err) {
+                    console.error('Failed to fetch book details:', err);
+                    document.getElementById('modalTitle').textContent = 'Error loading book details.';
+                }
+            }
+        </script>
+    </body>
+    </html>
