@@ -46,7 +46,36 @@ async function getBookById(req, res) {
     }
 }
 
+
+async function addBook(req, res){
+
+    try{
+
+        const result = await bookService.addBook();
+
+
+    } catch (err) {
+
+    }
+
+}
+
+
+async function deleteBook(req, res){
+
+    try{
+
+        const { id } = req.params;
+        const result = await bookService.deleteBook(id);
+
+    } catch (err) {
+
+    }
+}
+
 module.exports = {
     getBookList,
-    getBookById
+    getBookById,
+    addBook,
+    deleteBook
 }

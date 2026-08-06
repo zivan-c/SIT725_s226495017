@@ -8,12 +8,20 @@ async function getBookById(id) {
     return await bookList.findById(id);
 }
 
+async function addBook(){
+
+}
+
+async function deleteBook(id){
+
+}
+
 
 
 
 module.exports = {
-
     getBookList,
-    getBookById
-    
+    getBookById,
+    addBook,
+    deleteBook
 };
