@@ -58,7 +58,7 @@ async function addBook(req, res){
         })
 
     } catch (err) {
-        if(err.name === 'ValidationError' || err.name === 'CastError') {
+        if(err.name === 'ValidationError' || err.name === 'CastError' || err.name === 'StrictModeError') {
             return res.status(400).json({
                 status: 400,
                 message: 'Validation Failed',
@@ -110,7 +110,7 @@ async function updateBook(req, res){
         })
     } catch (err) {
 
-        if(err.name === 'ValidationError' || err.name === 'CastError'){
+        if(err.name === 'ValidationError' || err.name === 'CastError' || err.name === 'StrictModeError'){
             return res.status(400).json({
                 status: 400,
                 message: 'Validation Failed',
