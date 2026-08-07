@@ -41,11 +41,37 @@ const bookSchema = new mongoose.Schema({
         minlength: [1, 'Summary cannot be empty']
     },
     price: {
-        type: mongoose.Decimal128,
-        required[true, 'Price is required'],
-
+        type: mongoose.Schema.Types.Decimal128,
+        required: [true, 'Price is required'],
+        get: v => (v ? v.toString() : v),
+        validate: {
+            validator: function (v) {
+                if (v == null || v === undefined) return false;
+                const val = parseFloat(v.toString());
+                return !isNaN(val) && val >= 0;
+            },
+            message: 'Price must be a non-contiguous number'
+        }
     },
-    currency: {type: String, default: 'AUD'} 
+    currency: {
+        type: String, 
+        required: [true, 'Currency is required'],
+        default: 'AUD',
+    } 
+
+}, {
+    strict: 'throw',
+    toJSON: {
+        getters: true,
+        transform(_doc, ret) {
+            delete ret._id;
+            delete ret.__v;
+            return ret;
+        }
+    },
+    toObject: {
+        getters: true
+    }
 
 })
 

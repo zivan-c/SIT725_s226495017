@@ -5,15 +5,29 @@ async function getBookList(){
 }
 
 async function getBookById(id) {
-    return await bookList.findById(id);
+    return await bookList.findOne({id : id});
 }
 
-async function addBook(){
+async function addBook(bookData){
+
+    const newBook = new bookList(bookData);
+    return await newBook.save();
 
 }
 
-async function deleteBook(id){
+async function updateBook(id, updateData){
 
+    return await bookList.findOneAndUpdate(
+
+        { id: id },
+        { $set: updateData },
+        {
+            new: true,
+            runValidators: true,
+            context: 'query'
+        }
+    
+    );
 }
 
 
@@ -23,5 +37,5 @@ module.exports = {
     getBookList,
     getBookById,
     addBook,
-    deleteBook
+    updateBook
 };

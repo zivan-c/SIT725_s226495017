@@ -130,7 +130,8 @@ function makeValidBook(id) {
     year: 2020,
     genre: "Other",
     summary: "Valid summary text that satisfies your rules.",
-    price: "9.99"
+    price: "9.99",
+    currency: "AUD"
   };
 }
 
@@ -141,7 +142,8 @@ function makeValidUpdate() {
     year: 2021,
     genre: "Other",
     summary: "Updated summary text.",
-    price: "10.50"
+    price: "10.50",
+    currency: "AUD"
   };
 }
 
@@ -226,6 +228,74 @@ async function run() {
   //
   // Each test must include appropriate tags.
   //
+  // ---- T05 Unknown field UPDATE ----
+
+
+  // ---- T06 Missing Required Field ----
+  await test({
+    id: "T06",
+    name: "Missing required title on create",
+    method: "POST",
+    path: createPath,
+    expected: 400,
+    body: { ...makeValidBook(`b${Date.now()+2}`), title: undefined },
+    tags: ["CREATE_FAIL", "REQUIRED"]
+  });
+
+  // ---- T07 Invalid Data Type ----
+  await test({
+    id: "T07",
+    name: "Invalid data type for year",
+    method: "POST",
+    path: createPath,
+    expected: 400,
+    body: { ...makeValidBook(`b${Date.now()+3}`), year: "not-a-number" },
+    tags: ["CREATE_FAIL", "TYPE"]
+  });
+
+  // ---- T08 Boundary Test (Negative Price) ----
+  await test({
+    id: "T08",
+    name: "Boundary value negative price",
+    method: "POST",
+    path: createPath,
+    expected: 400,
+    body: { ...makeValidBook(`b${Date.now()+4}`), price: "-5.00" },
+    tags: ["CREATE_FAIL", "BOUNDARY"]
+  });
+
+  // ---- T09 String Length Test ----
+  await test({
+    id: "T09",
+    name: "Empty string length violation",
+    method: "POST",
+    path: createPath,
+    expected: 400,
+    body: { ...makeValidBook(`b${Date.now()+5}`), title: "" },
+    tags: ["CREATE_FAIL", "LENGTH"]
+  });
+
+  // ---- T10 Temporal Test (Future Year) ----
+  await test({
+    id: "T10",
+    name: "Temporal validation future year",
+    method: "POST",
+    path: createPath,
+    expected: 400,
+    body: { ...makeValidBook(`b${Date.now()+6}`), year: 2099 },
+    tags: ["CREATE_FAIL", "TEMPORAL"]
+  });
+
+  // ---- T11 Update Validation Failure ----
+  await test({
+    id: "T11",
+    name: "Invalid price on update",
+    method: "PUT",
+    path: updatePath(uniqueId),
+    expected: 400,
+    body: { ...makeValidUpdate(), price: "-10.00" },
+    tags: ["UPDATE_FAIL"]
+  });
 
   const pass = logSummary();
   logCoverage();

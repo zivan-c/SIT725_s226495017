@@ -6,6 +6,6 @@ router.get('/', bookController.getBookList);
 router.get('/:id', bookController.getBookById);
 
 router.post('/', bookController.addBook);
-router.put('/:id', bookController.deleteBook)
+router.put('/:id', bookController.updateBook)
 
 module.exports = router;

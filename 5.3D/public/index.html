@@ -58,7 +58,7 @@
                         const formattedPrice = book.price?.$numberDecimal || book.price || 'N/A';
                         return `
                             <div class="bookCard">
-                                <span class="book-title" data-id="${book._id}" style="color: blue; cursor: pointer; text-decoration: underline;">
+                                <span class="book-title" data-id="${book.id}" style="color: blue; cursor: pointer; text-decoration: underline;">
                                     ${book.title}
                                 </span>
                                 <span> $${formattedPrice}</span>
