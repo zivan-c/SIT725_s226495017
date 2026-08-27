@@ -706,14 +706,29 @@ async function run() {
     });
   }
 
+  // ---- T37 wrong currency on CREATE ----
+
+  await test({
+    id: "T37",
+    name: "Invalid currency value on CREATE",
+    method: "POST",
+    path: createPath,
+    expected: 400,
+    body: {
+        ...makeValidBook(`b${Date.now() + 23}`),
+        currency: "USD"
+    },
+    tags: ["CREATE_FAIL"]
+});
+
 
   // ============================================================
   // ADDITIONAL UPDATE VALIDATION
   // ============================================================
 
-  // ---- T37 Immutable ID on UPDATE ----
+  // ---- T38 Immutable ID on UPDATE ----
   await test({
-    id: "T37",
+    id: "T38",
     name: "ID cannot be changed on UPDATE",
     method: "PUT",
     path: updatePath(uniqueId),
@@ -725,9 +740,9 @@ async function run() {
   });
 
 
-  // ---- T38 Unknown field CREATE ----
+  // ---- T39 Unknown field CREATE ----
   await test({
-    id: "T38",
+    id: "T39",
     name: "Unknown field rejected on CREATE",
     method: "POST",
     path: createPath,
@@ -739,9 +754,9 @@ async function run() {
     tags: ["CREATE_FAIL", "UNKNOWN_CREATE"]
   });
 
-  // ---- T39 Unknown field UPDATE ----
+  // ---- T40 Unknown field UPDATE ----
   await test({
-    id: "T39",
+    id: "T40",
     name: "Unknown field rejected on UPDATE",
     method: "PUT",
     path: updatePath(uniqueId),
