@@ -26,7 +26,7 @@ const bookSchema = new mongoose.Schema({
         type: Number,
         required: [true, 'Year is required'],
         min: [0, 'Year cannot be a negative number'],
-        max: [2027, 'Cannot be a year beyond the current one'],
+        max: [new Date().getFullYear(), 'Cannot be a year beyond the current year'],
     },
     genre: {
         type: String,
@@ -50,13 +50,13 @@ const bookSchema = new mongoose.Schema({
                 const val = parseFloat(v.toString());
                 return !isNaN(val) && val >= 0;
             },
-            message: 'Price must be a non-contiguous number'
+            message: 'Price must be a valid non-negative number'
         }
     },
     currency: {
         type: String, 
         required: [true, 'Currency is required'],
-        default: 'AUD',
+        enum: ['AUD']
     } 
 
 }, {
